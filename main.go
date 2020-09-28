@@ -29,7 +29,7 @@ func display(Shortdef []string, traverses int) {
 	}
 }
 
-// TODO: Implement an getKey() func, that will look for an api key in conf.yaml
+// TODO(#3): Implement an getKey() func, that will look for an api key in conf.yaml
 // getKey() string {}
 
 // TODO: grab data from a conf file to produce a request
