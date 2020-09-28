@@ -50,6 +50,8 @@ func get(word string) {
 	display(todoStruct[0].Shortdef, 0)
 }
 
+
+// TODO(#2): Implemenet more flags, is there a better way to parse flags?
 func main() {
 
 	if (len(os.Args) == 2) {
