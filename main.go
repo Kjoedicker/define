@@ -32,7 +32,7 @@ func display(Shortdef []string, traverses int) {
 // TODO(#3): Implement an getKey() func, that will look for an api key in conf.yaml
 // getKey() string {}
 
-// TODO: grab data from a conf file to produce a request
+// TODO(#4): grab data from a conf file to produce a request
 func concatRequest(word string) string {
 	
 	// TODO: Replace dev key with getKey() func 
