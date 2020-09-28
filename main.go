@@ -35,7 +35,7 @@ func display(Shortdef []string, traverses int) {
 // TODO(#4): grab data from a conf file to produce a request
 func concatRequest(word string) string {
 	
-	// TODO: Replace dev key with getKey() func 
+	// TODO(#5): Replace dev key with getKey() func 
 	return fmt.Sprintf("%v%v%v","https://www.dictionaryapi.com/api/v3/references/collegiate/json/", word, "?key=2725bb6b-51ac-41c9-a400-3b863c04cca5")
 }
 
