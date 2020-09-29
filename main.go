@@ -11,6 +11,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// TODO: structure for other APIs
 type Definition []struct {
 
 	Meta struct {
@@ -20,14 +21,14 @@ type Definition []struct {
 	Shortdef []string `json:"shortdef"`
 }
 
-func display(Shortdef []string, traverses int) {
+func displayDef(Shortdef []string, traverses int) {
 
 	if (traverses == (len(Shortdef)-1)) {
 		fmt.Printf("%d - %v", (traverses+1), Shortdef[traverses])
 		return 
 	} else {
 		fmt.Printf("%d - %v\n", (traverses+1), Shortdef[traverses])
-		display(Shortdef, traverses+1)
+		displayDef(Shortdef, traverses+1)
 	}
 }
 
@@ -85,7 +86,7 @@ func get(url string) Definition {
 	json.Unmarshal(bodyBytes, &parsedReq)
 
 	return parsedReq
-	// display(parsedReq[0].Shortdef, 0)
+	// displayDef(parsedReq[0].Shortdef, 0)
 }
 
 // TODO(#2): Implement more flags, is there a better way to parse flags?
@@ -97,10 +98,9 @@ func main() {
 			log.Fatalln(err)
 		} else {
 			definition := get(link)
-			display(definition[0].Shortdef, 0)
+			displayDef(definition[0].Shortdef, 0)
 		}
 	} else {
 		fmt.Printf("invalid arguments")
 	}
-
 }
