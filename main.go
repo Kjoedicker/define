@@ -97,6 +97,7 @@ func main() {
 		if err != nil {
 			log.Fatalln(err)
 		} else {
+			// TODO(#8): implement a way to store already defined words, and check for them
 			definition := get(link)
 			displayDef(definition[0].Shortdef, 0)
 		}
