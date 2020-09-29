@@ -64,7 +64,6 @@ func parseRequest(word string) (string, error) {
 		// TODO: add support for multiple dictionary apis
 		switch (website) {
 		case "dictionary.com":
-			// TODO(#5): Replace dev key with getKey() func 
 			return fmt.Sprintf("%v%v%v", link, word, apiKey), nil
 		}
 	}
