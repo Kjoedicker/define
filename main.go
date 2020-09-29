@@ -71,7 +71,6 @@ func parseRequest(word string) (string, error) {
 	return "", errors.New("conf.yaml - invalid arguments supplied")
 }
 
-// TODO(#1): implement error handling on api
 func get(url string) Definition {
 
 	//sponge
