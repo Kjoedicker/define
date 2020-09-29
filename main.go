@@ -31,7 +31,6 @@ func display(Shortdef []string, traverses int) {
 	}
 }
 
-// TODO(#3): Implement an getKey() func, that will look for an api key in conf.yaml
 type config struct {
 	Website string 	`yaml:"website"`
 	Link 	string 	`yaml:"link`
