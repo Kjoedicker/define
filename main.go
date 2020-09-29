@@ -1,41 +1,41 @@
 package main
 
 import (
-    "encoding/json"
-    "fmt"
-    "io/ioutil"
-	"log"
-	"os"
-	"net/http"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
+
 	"gopkg.in/yaml.v2"
 )
 
 // TODO(#7): structure for other APIs
 type Definition []struct {
-
 	Meta struct {
-		ID string `json:"id"`	
+		ID string `json:"id"`
 	} `json:"meta"`
 
 	Shortdef []string `json:"shortdef"`
 }
 
-func displayDef(Shortdef []string, traverses int) {
+func displayDef(definition []string, traverses int) {
 
-	if (traverses == (len(Shortdef)-1)) {
-		fmt.Printf("%d - %v", (traverses+1), Shortdef[traverses])
-		return 
+	if traverses == (len(definition) - 1) {
+		fmt.Printf("%d - %v", (traverses + 1), definition[traverses])
+		return
 	} else {
-		fmt.Printf("%d - %v\n", (traverses+1), Shortdef[traverses])
-		displayDef(Shortdef, traverses+1)
+		fmt.Printf("%d - %v\n", (traverses + 1), definition[traverses])
+		displayDef(definition, traverses+1)
 	}
 }
 
 type config struct {
-	Website string 	`yaml:"website"`
-	Link 	string 	`yaml:"link`
-	ApiKey 	string 	`yaml:"apikey"`
+	Website string `yaml:"website"`
+	Link    string `yaml:"link`
+	ApiKey  string `yaml:"apikey"`
 }
 
 func getConfig() (string, string, string, error) {
@@ -61,7 +61,7 @@ func parseRequest(word string) (string, error) {
 		log.Fatalln(err)
 	} else {
 		// TODO(#6): add support for multiple dictionary apis
-		switch (website) {
+		switch website {
 		case "dictionary.com":
 			return fmt.Sprintf("%v%v%v", link, word, apiKey), nil
 		}
@@ -75,12 +75,12 @@ func get(url string) Definition {
 	fmt.Printf("%v\n", url)
 
 	resp, err := http.Get(url)
-    if err != nil {
-        log.Fatalln(err)
-    }
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-    defer resp.Body.Close()
-    bodyBytes, _ := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	bodyBytes, _ := ioutil.ReadAll(resp.Body)
 
 	parsedReq := Definition{}
 	json.Unmarshal(bodyBytes, &parsedReq)
@@ -92,14 +92,19 @@ func get(url string) Definition {
 // TODO(#2): Implement more flags, is there a better way to parse flags?
 func main() {
 
-	if (len(os.Args) == 2) {
-		link, err := parseRequest(os.Args[1])
+	if len(os.Args) == 2 {
+		definition, err := checkDict(os.Args[1])
 		if err != nil {
-			log.Fatalln(err)
+			link, err := parseRequest(os.Args[1])
+			if err != nil {
+				log.Fatalln(err)
+			} else {
+				// TODO(#8): implement a way to store already defined words, and check for them
+				definition := get(link)
+				displayDef(definition[0].Shortdef, 0)
+			}
 		} else {
-			// TODO(#8): implement a way to store already defined words, and check for them
-			definition := get(link)
-			displayDef(definition[0].Shortdef, 0)
+			displayDef(definition, 0)
 		}
 	} else {
 		fmt.Printf("invalid arguments")

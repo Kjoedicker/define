@@ -7,3 +7,6 @@ snitch
 commit.txt
 Makefile
 jsonconf.go
+mesh.json
+jsonhandler
+
