@@ -54,7 +54,6 @@ func getConfig() (string, string, string, error) {
 	return conf.Website, conf.Link, conf.ApiKey, nil
 }
 
-// TODO(#4): grab data from a conf file to produce a request
 func parseRequest(word string) (string, error) {
 
 	website, link, apiKey, err := getConfig()
