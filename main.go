@@ -6,7 +6,9 @@ import (
     "io/ioutil"
 	"log"
 	"os"
-    "net/http"
+	"net/http"
+	"errors"
+	"gopkg.in/yaml.v2"
 )
 
 type Definition []struct {
@@ -30,13 +32,43 @@ func display(Shortdef []string, traverses int) {
 }
 
 // TODO(#3): Implement an getKey() func, that will look for an api key in conf.yaml
-// getKey() string {}
+type config struct {
+	Website string 	`yaml:"website"`
+	Link 	string 	`yaml:"link`
+	ApiKey 	string 	`yaml:"apikey"`
+}
+
+func getConfig() (string, string, string, error) {
+
+	buf, err := ioutil.ReadFile("conf.yaml")
+	if err != nil {
+		return "", "", "", errors.New("conf.yaml - not in path")
+	}
+
+	conf := &config{}
+	err = yaml.Unmarshal(buf, conf)
+	if err != nil {
+		return "", "", "", errors.New("conf.yaml - invalid configuration")
+	}
+
+	return conf.Website, conf.Link, conf.ApiKey, nil
+}
 
 // TODO(#4): grab data from a conf file to produce a request
-func concatRequest(word string) string {
-	
-	// TODO(#5): Replace dev key with getKey() func 
-	return fmt.Sprintf("%v%v%v","https://www.dictionaryapi.com/api/v3/references/collegiate/json/", word, "?key=2725bb6b-51ac-41c9-a400-3b863c04cca5")
+func parseRequest(word string) (string, error) {
+
+	website, link, apiKey, err := getConfig()
+	if err != nil {
+		log.Fatalln(err)
+	} else {
+		// TODO: add support for multiple dictionary apis
+		switch (website) {
+		case "dictionary.com":
+			// TODO(#5): Replace dev key with getKey() func 
+			return fmt.Sprintf("%v%v%v", link, word, apiKey), nil
+		}
+	}
+	return "", errors.New("conf.yaml - invalid arguments supplied")
 }
 
 // TODO(#1): implement error handling on api
@@ -64,9 +96,15 @@ func get(url string) Definition {
 func main() {
 
 	if (len(os.Args) == 2) {
-		definition := get(concatRequest(os.Args[1]))
-		display(definition[0].Shortdef, 0)
+		link, err := parseRequest(os.Args[1])
+		if err != nil {
+			log.Fatalln(err)
+		} else {
+			definition := get(link)
+			display(definition[0].Shortdef, 0)
+		}
 	} else {
 		fmt.Printf("invalid arguments")
 	}
+
 }
