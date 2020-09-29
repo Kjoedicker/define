@@ -59,7 +59,7 @@ func parseRequest(word string) (string, error) {
 	if err != nil {
 		log.Fatalln(err)
 	} else {
-		// TODO: add support for multiple dictionary apis
+		// TODO(#6): add support for multiple dictionary apis
 		switch (website) {
 		case "dictionary.com":
 			return fmt.Sprintf("%v%v%v", link, word, apiKey), nil
