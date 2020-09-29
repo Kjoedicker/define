@@ -11,7 +11,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// TODO: structure for other APIs
+// TODO(#7): structure for other APIs
 type Definition []struct {
 
 	Meta struct {
