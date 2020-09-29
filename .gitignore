@@ -6,3 +6,4 @@ main
 snitch
 commit.txt
 Makefile
+jsonconf.go
