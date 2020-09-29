@@ -43,7 +43,7 @@ func concatRequest(word string) string {
 func get(url string) Definition {
 
 	//sponge
-	fmt.Printf("%v", url)
+	fmt.Printf("%v\n", url)
 
 	resp, err := http.Get(url)
     if err != nil {
