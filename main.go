@@ -39,19 +39,19 @@ type config struct {
 	Dictionary string `yaml:"dictionary"`
 }
 
-func getConfig() (string, string, string, map[string][]string, error) {
+func getConfig() (string, string, string, string, error) {
 
 	buf, err := ioutil.ReadFile("conf.yaml")
 	if err != nil {
-		return "", "", "", map[string][]string(nil), errors.New("conf.yaml - not in path")
+		return "", "", "", "", errors.New("conf.yaml - not in path")
 	}
 
 	conf := &config{}
 	err = yaml.Unmarshal(buf, conf)
 	if err != nil {
-		return "", "", "", map[string][]string(nil), errors.New("conf.yaml - invalid configuration")
+		return "", "", "", "", errors.New("conf.yaml - invalid configuration")
 	}
-	return conf.Website, conf.Link, conf.ApiKey, grabDict(conf.Dictionary), nil
+	return conf.Website, conf.Link, conf.ApiKey, conf.Dictionary, nil
 }
 
 func parseRequest(word string, website string, link string, apiKey string) (string, error) {
@@ -82,22 +82,23 @@ func get(url string) Definition {
 	json.Unmarshal(bodyBytes, &parsedReq)
 
 	return parsedReq
-	// displayDef(parsedReq[0].Shortdef, 0)
 }
 
 // TODO(#2): Implement more flags, is there a better way to parse flags?
 func main() {
 
+	// TODO: handle multiple words
 	if len(os.Args) < 2 {
 		fmt.Printf("invalid number of arguments\n")
 		return
 	}
 
-	website, link, apiKey, dictionary, err := getConfig()
+	website, link, apiKey, dictFile, err := getConfig()
 	if err != nil {
 		log.Fatalln(err)
 	}
-	
+
+	dictionary := grabDict(dictFile)
 	definition, err := checkDict(os.Args[1], dictionary)
 	if err == nil {
 		displayDef(definition, 0)
@@ -111,6 +112,7 @@ func main() {
 		// TODO(#8): implement a way to store already defined words, and check for them
 		definition := get(requestLink)
 		displayDef(definition[0].Shortdef, 0)
-		//storeDef
+		updateDict(dictionary, os.Args[1], definition[0].Shortdef)
+		storeJson(dictFile, dictionary)
 	}
 }

@@ -11,7 +11,7 @@ import (
 
 func toJson(data map[string][]string) []byte {
 
-	procData, err := json.Marshal(data)
+	procData, err := json.MarshalIndent(data, "", " ")
 	if err != nil {
 		log.Fatalf("error during json.Marshal")
 	}
@@ -36,6 +36,20 @@ func grabJson(filename string) []byte {
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 
 	return byteValue
+}
+
+func storeJson(filename string, data map[string][]string) {
+
+	converted := toJson(data)
+
+	err := ioutil.WriteFile(filename, converted, 0644)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func updateDict(dictionary map[string][]string, word string, definition []string) {
+	dictionary[word] = definition
 }
 
 func grabDict(dictionary string) map[string][]string {
