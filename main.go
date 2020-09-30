@@ -109,7 +109,6 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	} else {
-		// TODO(#8): implement a way to store already defined words, and check for them
 		definition := get(requestLink)
 		displayDef(definition[0].Shortdef, 0)
 		updateDict(dictionary, os.Args[1], definition[0].Shortdef)
