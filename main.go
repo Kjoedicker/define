@@ -33,40 +33,36 @@ func displayDef(definition []string, traverses int) {
 }
 
 type config struct {
-	Website string `yaml:"website"`
-	Link    string `yaml:"link`
-	ApiKey  string `yaml:"apikey"`
+	Website    string `yaml:"website"`
+	Link       string `yaml:"link`
+	ApiKey     string `yaml:"apikey"`
+	Dictionary string `yaml:"dictionary"`
 }
 
-func getConfig() (string, string, string, error) {
+func getConfig() (string, string, string, map[string][]string, error) {
 
 	buf, err := ioutil.ReadFile("conf.yaml")
 	if err != nil {
-		return "", "", "", errors.New("conf.yaml - not in path")
+		return "", "", "", map[string][]string(nil), errors.New("conf.yaml - not in path")
 	}
 
 	conf := &config{}
 	err = yaml.Unmarshal(buf, conf)
 	if err != nil {
-		return "", "", "", errors.New("conf.yaml - invalid configuration")
+		return "", "", "", map[string][]string(nil), errors.New("conf.yaml - invalid configuration")
 	}
-
-	return conf.Website, conf.Link, conf.ApiKey, nil
+	return conf.Website, conf.Link, conf.ApiKey, grabDict(conf.Dictionary), nil
 }
 
-func parseRequest(word string) (string, error) {
+func parseRequest(word string, website string, link string, apiKey string) (string, error) {
 
-	website, link, apiKey, err := getConfig()
-	if err != nil {
-		log.Fatalln(err)
-	} else {
-		// TODO(#6): add support for multiple dictionary apis
-		switch website {
-		case "dictionary.com":
-			return fmt.Sprintf("%v%v%v", link, word, apiKey), nil
-		}
+	// TODO(#6): add support for multiple dictionary apis
+	switch website {
+	case "dictionary.com":
+		return fmt.Sprintf("%v%v%v", link, word, apiKey), nil
 	}
-	return "", errors.New("conf.yaml - invalid arguments supplied")
+
+	return "", errors.New("conf.Website invalid config")
 }
 
 func get(url string) Definition {
@@ -92,21 +88,29 @@ func get(url string) Definition {
 // TODO(#2): Implement more flags, is there a better way to parse flags?
 func main() {
 
-	if len(os.Args) == 2 {
-		definition, err := checkDict(os.Args[1])
-		if err != nil {
-			link, err := parseRequest(os.Args[1])
-			if err != nil {
-				log.Fatalln(err)
-			} else {
-				// TODO(#8): implement a way to store already defined words, and check for them
-				definition := get(link)
-				displayDef(definition[0].Shortdef, 0)
-			}
-		} else {
-			displayDef(definition, 0)
-		}
+	if len(os.Args) < 2 {
+		fmt.Printf("invalid number of arguments\n")
+		return
+	}
+
+	website, link, apiKey, dictionary, err := getConfig()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	
+	definition, err := checkDict(os.Args[1], dictionary)
+	if err == nil {
+		displayDef(definition, 0)
+		return
+	}
+
+	requestLink, err := parseRequest(os.Args[1], website, link, apiKey) 
+	if err != nil {
+		log.Fatalln(err)
 	} else {
-		fmt.Printf("invalid arguments")
+		// TODO(#8): implement a way to store already defined words, and check for them
+		definition := get(requestLink)
+		displayDef(definition[0].Shortdef, 0)
+		//storeDef
 	}
 }

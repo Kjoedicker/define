@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
+	// "fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -31,33 +31,35 @@ func grabJson(filename string) []byte {
 
 	jsonFile, err := os.Open(filename)
 	if err != nil {
-		log.Fatalf("error in provided filepath")
+		log.Fatalf("grabJson() - error in provided filepath")
 	}
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 
 	return byteValue
 }
 
-func checkDict(word string) ([]string, error) {
-	dictionary := froJson(grabJson("mesh.json"))
+func grabDict(dictionary string) map[string][]string {
+	return froJson(grabJson(dictionary))
+}
 
-	fmt.Printf("%v", dictionary[word])
+func checkDict(word string, dictionary map[string][]string) ([]string, error) {
+
 	if word, ok := dictionary[word]; ok {
 		return word, nil
 	}
 
-	return []string(nil), errors.New("undefined")
+	return []string(nil), errors.New("checkDict() - undefined")
 }
 
-func main() {
+// func main() {
 
-	// test := froJson(grabJson("mesh.json"))
-	if l, err := checkDict("test1"); err != nil {
-		fmt.Printf("here")
-	} else {
-		fmt.Printf("%v", l)
-	}
+// 	// test := froJson(grabJson("mesh.json"))
+// 	if l, err := checkDict("test1"); err != nil {
+// 		fmt.Printf("here")
+// 	} else {
+// 		fmt.Printf("%v", l)
+// 	}
 
-	// fmt.Printf("%v", test[os.Args[1]])
-	// fmt.Printf("%v", checkDict("test"))
-}
+// 	// fmt.Printf("%v", test[os.Args[1]])
+// 	// fmt.Printf("%v", checkDict("test"))
+// }
