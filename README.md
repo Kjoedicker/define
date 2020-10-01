@@ -10,7 +10,7 @@ Allows you to define, store, and reference previously defined words.
 $ go get github.com/Kjoedicker/define
 ```
 
-You will need to create a developer account with [dictionary](dictionary.com)
+You will need to create a developer account with [dictionary](https://dictionary.com)
 
 This is required inorder to gain acess to an api key, which you will need to include in ```conf.yaml```
 
