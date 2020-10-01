@@ -21,6 +21,7 @@ type Definition []struct {
 	Shortdef []string `json:"shortdef"`
 }
 
+// TODO(#11): flags to specify display type. json, text,?
 func displayDef(definition []string, traverses int) {
 
 	if traverses == (len(definition) - 1) {
