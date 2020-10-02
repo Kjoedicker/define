@@ -88,7 +88,6 @@ func get(url string) definition {
 
 func procWord(word string, verbosity int) {
 
-	// TODO(#13): add a flag for displaying the word before the definition
 	if verbosity == 1 {
 		fmt.Printf("\n%v:\n", word)
 	}
