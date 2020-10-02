@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-func toJson(data map[string][]string) []byte {
+func toJSON(data map[string][]string) []byte {
 
 	procData, err := json.MarshalIndent(data, "", " ")
 	if err != nil {
@@ -18,29 +18,29 @@ func toJson(data map[string][]string) []byte {
 	return procData
 }
 
-func froJson(unparsedJson []byte) map[string][]string {
+func froJson(unparsedJSON []byte) map[string][]string {
 
-	var parsedJson map[string][]string
+	var parsedJSON map[string][]string
 
-	json.Unmarshal([]byte(unparsedJson), &parsedJson)
+	json.Unmarshal([]byte(unparsedJSON), &parsedJSON)
 
-	return parsedJson
+	return parsedJSON
 }
 
-func grabJson(filename string) []byte {
+func grabJSON(filename string) []byte {
 
-	jsonFile, err := os.Open(filename)
+	JSONFile, err := os.Open(filename)
 	if err != nil {
-		log.Fatalf("grabJson() - error in provided filepath\n")
+		log.Fatalf("grabJSON() - error in provided filepath\n")
 	}
-	byteValue, _ := ioutil.ReadAll(jsonFile)
+	byteValue, _ := ioutil.ReadAll(JSONFile)
 
 	return byteValue
 }
 
-func storeJson(filename string, data map[string][]string) {
+func storeJSON(filename string, data map[string][]string) {
 
-	converted := toJson(data)
+	converted := toJSON(data)
 
 	err := ioutil.WriteFile(filename, converted, 0644)
 	if err != nil {
@@ -53,7 +53,7 @@ func updateDict(dictionary map[string][]string, word string, definition []string
 }
 
 func grabDict(dictionary string) map[string][]string {
-	return froJson(grabJson(dictionary))
+	return froJSON(grabJSON(dictionary))
 }
 
 func checkDict(word string, dictionary map[string][]string) ([]string, error) {
@@ -62,7 +62,7 @@ func checkDict(word string, dictionary map[string][]string) ([]string, error) {
 		return word, nil
 	}
 
-	return []string(nil), errors.New("checkDict() - undefined\n")
+	return []string(nil), errors.New("checkDict() - undefined")
 }
 
 // func main() {
