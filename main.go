@@ -85,14 +85,7 @@ func get(url string) Definition {
 	return parsedReq
 }
 
-// TODO(#2): Implement more flags, is there a better way to parse flags?
-func main() {
-
-	// TODO(#9): handle multiple words
-	if len(os.Args) < 2 {
-		fmt.Printf("invalid number of arguments\n")
-		return
-	}
+func procWord(word string) {
 
 	website, link, apiKey, dictFile, err := getConfig()
 	if err != nil {
@@ -100,19 +93,33 @@ func main() {
 	}
 
 	dictionary := grabDict(dictFile)
-	definition, err := checkDict(os.Args[1], dictionary)
+	definition, err := checkDict(word, dictionary)
 	if err == nil {
 		displayDef(definition, 0)
 		return
 	}
 
-	requestLink, err := parseRequest(os.Args[1], website, link, apiKey) 
+	requestLink, err := parseRequest(word, website, link, apiKey) 
 	if err != nil {
 		log.Fatalln(err)
 	} else {
 		definition := get(requestLink)
 		displayDef(definition[0].Shortdef, 0)
-		updateDict(dictionary, os.Args[1], definition[0].Shortdef)
+		updateDict(dictionary, word, definition[0].Shortdef)
 		storeJson(dictFile, dictionary)
+	}
+}
+
+// TODO(#2): Implement more flags, is there a better way to parse flags?
+func main() {
+
+	// TODO(#9): handle multiple words
+	if len(os.Args) < 2 {
+		fmt.Printf("invalid number of arguments\n")
+		return
+	} else {
+		for index := 1; index < len(os.Args); index++ {
+			procWord(os.Args[index])
+		}
 	}
 }
