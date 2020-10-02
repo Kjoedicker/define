@@ -88,7 +88,7 @@ func get(url string) Definition {
 
 func procWord(word string) {
 
-	// TODO: add a flag for displaying the word before the definition
+	// TODO(#13): add a flag for displaying the word before the definition
 	fmt.Printf("\n%v:\n", word)
 
 	website, link, apiKey, dictFile, err := getConfig()
