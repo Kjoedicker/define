@@ -117,7 +117,6 @@ func procWord(word string) {
 // TODO(#2): Implement more flags, is there a better way to parse flags?
 func main() {
 
-	// TODO(#9): handle multiple words
 	if len(os.Args) < 2 {
 		fmt.Printf("invalid number of arguments\n")
 		return
