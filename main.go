@@ -95,7 +95,7 @@ func procWord(word string) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
+	
 	dictionary := grabDict(dictFile)
 	definition, err := checkDict(word, dictionary)
 	if err == nil {
