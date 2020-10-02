@@ -1,4 +1,4 @@
-# define
+# define [![Build Status](https://travis-ci.com/Kjoedicker/define.svg?branch=master)](https://travis-ci.com/Kjoedicker/define)
 A cli tool for defining words, and building a local dictionary.
 
 ## About
