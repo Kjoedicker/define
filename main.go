@@ -86,16 +86,18 @@ func get(url string) definition {
 	return parsedReq
 }
 
-func procWord(word string) {
+func procWord(word string, verbosity int) {
 
 	// TODO(#13): add a flag for displaying the word before the definition
-	fmt.Printf("\n%v:\n", word)
+	if verbosity == 1 {
+		fmt.Printf("\n%v:\n", word)
+	}
 
 	website, link, apiKey, dictFile, err := getConfig()
 	if err != nil {
 		log.Fatalln(err)
 	}
-	
+
 	dictionary := grabDict(dictFile)
 	definition, err := checkDict(word, dictionary)
 	if err == nil {
@@ -114,6 +116,14 @@ func procWord(word string) {
 	}
 }
 
+func checkFlag(flag string) int {
+
+	if flag == "-v" {
+		return 1
+	}
+	return 0
+}
+
 // TODO(#2): Implement more flags, is there a better way to parse flags?
 func main() {
 
@@ -122,8 +132,8 @@ func main() {
 		return
 	}
 
-	for index := 1; index < len(os.Args); index++ {
-		procWord(os.Args[index])
+	verbosity := checkFlag(os.Args[1])
+	for index := verbosity + 1; index < len(os.Args); index++ {
+		procWord(os.Args[index], verbosity)
 	}
-
 }
