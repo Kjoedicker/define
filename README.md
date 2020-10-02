@@ -1,4 +1,4 @@
-# define [![Build Status](https://travis-ci.com/Kjoedicker/define.svg?branch=master)](https://travis-ci.com/Kjoedicker/define)
+# define [![Build Status](https://travis-ci.com/Kjoedicker/define.svg?branch=master)](https://travis-ci.com/Kjoedicker/define) [![Go Report Card](https://goreportcard.com/badge/github.com/Kjoedicker/define)](https://goreportcard.com/report/github.com/Kjoedicker/define)
 A cli tool for defining words, and building a local dictionary.
 
 ## About
