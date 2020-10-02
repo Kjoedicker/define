@@ -18,7 +18,7 @@ func toJSON(data map[string][]string) []byte {
 	return procData
 }
 
-func froJson(unparsedJSON []byte) map[string][]string {
+func froJSON(unparsedJSON []byte) map[string][]string {
 
 	var parsedJSON map[string][]string
 

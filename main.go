@@ -27,7 +27,7 @@ func displayDef(definition []string, traverses int) {
 	if traverses == (len(definition) - 1) {
 		fmt.Printf("%d - %v\n", (traverses + 1), definition[traverses])
 		return
-	} 
+	}
 
 	fmt.Printf("%d - %v\n", (traverses + 1), definition[traverses])
 	displayDef(definition, traverses+1)
@@ -35,7 +35,7 @@ func displayDef(definition []string, traverses int) {
 
 type config struct {
 	Website    string `yaml:"website"`
-	Link       string `yaml:"link`
+	Link       string `yaml:"link"`
 	APIKey     string `yaml:"apikey"`
 	Dictionary string `yaml:"dictionary"`
 }
@@ -52,7 +52,7 @@ func getConfig() (string, string, string, string, error) {
 	if err != nil {
 		return "", "", "", "", errors.New("conf.yaml - invalid configuration")
 	}
-	return conf.Website, conf.Link, conf.ApiKey, conf.Dictionary, nil
+	return conf.Website, conf.Link, conf.APIKey, conf.Dictionary, nil
 }
 
 func parseRequest(word string, website string, link string, apiKey string) (string, error) {
@@ -67,7 +67,7 @@ func parseRequest(word string, website string, link string, apiKey string) (stri
 }
 
 // TODO(#12): add handling for words not found during api request
-func get(url string) Definition {
+func get(url string) definition {
 
 	//sponge
 	fmt.Printf("referencing api..\n")
@@ -80,7 +80,7 @@ func get(url string) Definition {
 	defer resp.Body.Close()
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
 
-	parsedReq := Definition{}
+	parsedReq := definition{}
 	json.Unmarshal(bodyBytes, &parsedReq)
 
 	return parsedReq
@@ -103,14 +103,14 @@ func procWord(word string) {
 		return
 	}
 
-	requestLink, err := parseRequest(word, website, link, apiKey) 
+	requestLink, err := parseRequest(word, website, link, apiKey)
 	if err != nil {
 		log.Fatalln(err)
 	} else {
 		definition := get(requestLink)
 		displayDef(definition[0].Shortdef, 0)
 		updateDict(dictionary, word, definition[0].Shortdef)
-		storeJson(dictFile, dictionary)
+		storeJSON(dictFile, dictionary)
 	}
 }
 
@@ -120,8 +120,8 @@ func main() {
 	if len(os.Args) < 2 {
 		fmt.Printf("invalid number of arguments\n")
 		return
-	} 
-	
+	}
+
 	for index := 1; index < len(os.Args); index++ {
 		procWord(os.Args[index])
 	}

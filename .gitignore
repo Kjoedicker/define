@@ -3,3 +3,4 @@ conf.yaml
 define
 dictionary.json
 snitch
+golint
