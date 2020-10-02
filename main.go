@@ -66,7 +66,7 @@ func parseRequest(word string, website string, link string, apiKey string) (stri
 	return "", errors.New("conf.Website invalid config\n")
 }
 
-// TODO: add handling for words not found during api request
+// TODO(#12): add handling for words not found during api request
 func get(url string) Definition {
 
 	//sponge
