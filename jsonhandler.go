@@ -13,7 +13,7 @@ func toJson(data map[string][]string) []byte {
 
 	procData, err := json.MarshalIndent(data, "", " ")
 	if err != nil {
-		log.Fatalf("error during json.Marshal")
+		log.Fatalf("error during json.Marshal\n")
 	}
 	return procData
 }
@@ -31,7 +31,7 @@ func grabJson(filename string) []byte {
 
 	jsonFile, err := os.Open(filename)
 	if err != nil {
-		log.Fatalf("grabJson() - error in provided filepath")
+		log.Fatalf("grabJson() - error in provided filepath\n")
 	}
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 
@@ -62,7 +62,7 @@ func checkDict(word string, dictionary map[string][]string) ([]string, error) {
 		return word, nil
 	}
 
-	return []string(nil), errors.New("checkDict() - undefined")
+	return []string(nil), errors.New("checkDict() - undefined\n")
 }
 
 // func main() {

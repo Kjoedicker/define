@@ -25,7 +25,7 @@ type Definition []struct {
 func displayDef(definition []string, traverses int) {
 
 	if traverses == (len(definition) - 1) {
-		fmt.Printf("%d - %v", (traverses + 1), definition[traverses])
+		fmt.Printf("%d - %v\n", (traverses + 1), definition[traverses])
 		return
 	} else {
 		fmt.Printf("%d - %v\n", (traverses + 1), definition[traverses])
@@ -44,13 +44,13 @@ func getConfig() (string, string, string, string, error) {
 
 	buf, err := ioutil.ReadFile("conf.yaml")
 	if err != nil {
-		return "", "", "", "", errors.New("conf.yaml - not in path")
+		return "", "", "", "", errors.New("conf.yaml - not in path\n")
 	}
 
 	conf := &config{}
 	err = yaml.Unmarshal(buf, conf)
 	if err != nil {
-		return "", "", "", "", errors.New("conf.yaml - invalid configuration")
+		return "", "", "", "", errors.New("conf.yaml - invalid configuration\n")
 	}
 	return conf.Website, conf.Link, conf.ApiKey, conf.Dictionary, nil
 }
@@ -63,13 +63,14 @@ func parseRequest(word string, website string, link string, apiKey string) (stri
 		return fmt.Sprintf("%v%v%v", link, word, apiKey), nil
 	}
 
-	return "", errors.New("conf.Website invalid config")
+	return "", errors.New("conf.Website invalid config\n")
 }
 
+// TODO: add handling for words not found during api request
 func get(url string) Definition {
 
 	//sponge
-	fmt.Printf("%v\n", url)
+	fmt.Printf("referencing api..\n")
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -86,6 +87,9 @@ func get(url string) Definition {
 }
 
 func procWord(word string) {
+
+	// TODO: add a flag for displaying the word before the definition
+	fmt.Printf("\n%v:\n", word)
 
 	website, link, apiKey, dictFile, err := getConfig()
 	if err != nil {
