@@ -21,8 +21,19 @@ type definition []struct {
 	Shortdef []string `json:"shortdef"`
 }
 
+// TODO: find other panic mode errors and handle them here
+func recovery(errType string) {
+	if r := recover(); r != nil {
+		switch errType {
+		case "invalid":
+			fmt.Println("not in database")
+		}
+	}
+}
+
 // TODO(#11): flags to specify display type. json, text,?
 func displayDef(definition []string, traverses int) {
+	defer recovery("invalid")
 
 	if traverses == (len(definition) - 1) {
 		fmt.Printf("%d - %v\n", (traverses + 1), definition[traverses])
@@ -70,7 +81,7 @@ func parseRequest(word string, website string, link string, apiKey string) (stri
 func get(url string) definition {
 
 	//sponge
-	fmt.Printf("referencing api..\n")
+	fmt.Printf("referencing api..\n%v", url)
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -78,7 +89,7 @@ func get(url string) definition {
 	}
 
 	defer resp.Body.Close()
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
 
 	parsedReq := definition{}
 	json.Unmarshal(bodyBytes, &parsedReq)
