@@ -21,7 +21,7 @@ type definition []struct {
 	Shortdef []string `json:"shortdef"`
 }
 
-// TODO: find other panic mode errors and handle them here
+// TODO(#15): find other panic mode errors and handle them here
 func recovery(errType string) {
 	if r := recover(); r != nil {
 		switch errType {
