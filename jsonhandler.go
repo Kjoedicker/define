@@ -54,7 +54,7 @@ func updateDict(dictionary map[string][]string, word string, definition []string
 	}
 	
 	// TODO(#18): Add a log for non critical errors that occur
-	//	ex. the dictionary did not get written to because dictionary[word] is nil
+	//	 ex. the dictionary did not get written to because dictionary[word] is nil
 }
 
 func grabDict(dictionary string) map[string][]string {

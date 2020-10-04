@@ -11,7 +11,7 @@ $ go get github.com/Kjoedicker/define
 $ go build main.go jsonhandler.go
 ```
 
-You will need to create a developer account with [dictionary](https://dictionary.com)
+You will need to create a developer account with [dictionary](https://dictionaryapi.com)
 
 This is required inorder to gain acess to an api key, which you will need to include in ```conf.yaml```
 
