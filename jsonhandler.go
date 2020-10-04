@@ -49,7 +49,11 @@ func storeJSON(filename string, data map[string][]string) {
 }
 
 func updateDict(dictionary map[string][]string, word string, definition []string) {
-	dictionary[word] = definition
+	if dictionary[word] != nil {
+		dictionary[word] = definition
+	}
+	
+	// TODO: add logging inside an else clause?
 }
 
 func grabDict(dictionary string) map[string][]string {
