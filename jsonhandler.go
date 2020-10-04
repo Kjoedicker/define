@@ -53,7 +53,7 @@ func updateDict(dictionary map[string][]string, word string, definition []string
 		dictionary[word] = definition
 	}
 	
-	// TODO: add logging inside an else clause?
+	// TODO(#16): add logging inside an else clause?
 }
 
 func grabDict(dictionary string) map[string][]string {
