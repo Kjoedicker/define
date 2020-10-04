@@ -53,7 +53,6 @@ func updateDict(dictionary map[string][]string, word string, definition []string
 		dictionary[word] = definition
 	}
 	
-	// TODO(#16): add logging inside an else clause?
 	// TODO(#18): Add a log for non critical errors that occur
 	//	ex. the dictionary did not get written to because dictionary[word] is nil
 }
