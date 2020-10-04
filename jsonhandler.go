@@ -52,7 +52,6 @@ func updateDict(dictionary map[string][]string, word string, definition []string
 	if dictionary[word] != nil {
 		dictionary[word] = definition
 	}
-	
 	// TODO(#18): Add a log for non critical errors that occur
 	//	 ex. the dictionary did not get written to because dictionary[word] is nil
 }
