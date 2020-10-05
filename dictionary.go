@@ -1,4 +1,4 @@
-package define
+package main
 
 import (
 	"errors"
