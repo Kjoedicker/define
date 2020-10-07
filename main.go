@@ -42,10 +42,14 @@ func procWord(word string, verbosity int) {
 		log.Fatalln(err)
 	} else {
 		definition := get(requestLink)
-		displayDef(definition[0].Shortdef, 0)
-		fmt.Printf("test")
-		updateDict(dictionary, word, definition[0].Shortdef)
-		storeJSON(dictFile, dictionary)
+
+		err := updateDict(dictionary, word, definition[0].Shortdef)
+		if err != false {
+			fmt.Printf("%v - not in dictionary", word)
+		} else {
+			storeJSON(dictFile, dictionary)
+			displayDef(definition[0].Shortdef, 0)
+		}
 	}
 }
 
