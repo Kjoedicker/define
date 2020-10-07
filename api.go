@@ -66,7 +66,7 @@ func parseRequest(word string, website string, link string, apiKey string) (stri
 func get(url string) definition {
 
 	//sponge
-	fmt.Printf("referencing api..\n%v", url)
+	// fmt.Printf("referencing api..\n%v", url)
 
 	resp, err := http.Get(url)
 	if err != nil {
