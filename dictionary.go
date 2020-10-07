@@ -9,10 +9,10 @@ func updateDict(dictionary map[string][]string, word string, definition []string
 	if definition != nil {
 		dictionary[word] = definition
 		return false
-	} else {
-		return true
 	}
-	
+
+	return true
+
 	// TODO(#18): Add a log for non critical errors that occur
 	//	 ex. the dictionary did not get written to because dictionary[word] is nil
 }
