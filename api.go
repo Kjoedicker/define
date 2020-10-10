@@ -69,7 +69,7 @@ func get(url string) definition {
 	// fmt.Printf("referencing api..\n%v", url)
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Printf("Failed to resolve GET")
+		fmt.Printf("Failed to resolve GET\n")
 		log.Fatal(err)
 	}
 
