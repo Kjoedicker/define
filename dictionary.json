@@ -9,10 +9,20 @@
   "the second in a set or series",
   "a 2-dollar bill"
  ],
+ "analog": [
+  "of, relating to, or being a mechanism or device in which information is represented by continuously variable physical quantities",
+  "of or relating to an analog computer",
+  "having both hour and minute hands"
+ ],
  "awkward": [
   "lacking dexterity or skill (as in the use of hands)",
   "showing the result of a lack of expertness",
   "lacking ease or grace (as of movement or expression)"
+ ],
+ "baroque": [
+  "of, relating to, or having the characteristics of a style of artistic expression prevalent especially in the 17th century that is marked generally by use of complex forms, bold ornamentation, and the juxtaposition of contrasting elements often conveying a sense of drama, movement, and tension",
+  "characterized by grotesqueness, extravagance, complexity, or flamboyance",
+  "irregularly shaped"
  ],
  "brevity": [
   "shortness of duration; especially : shortness or conciseness of expression"
@@ -21,6 +31,11 @@
   "to form by ordering and uniting materials by gradual means into a composite whole : construct",
   "to cause to be constructed",
   "to develop according to a systematic plan, by a definite process, or on a particular base"
+ ],
+ "candle": [
+  "a usually molded or dipped mass of wax or tallow containing a wick that may be burned (as to give light, heat, or scent or for celebration or votive purposes)",
+  "something resembling a candle in shape or use",
+  "required effort, expense, or trouble —usually used in the phrase not worth the candle"
  ],
  "co": [
   "company",
@@ -40,10 +55,28 @@
   "counteract, neutralize",
   "to alter or adjust so as to bring to some standard or required condition"
  ],
+ "covid": [
+  "a mild to severe respiratory illness that is caused by a coronavirus (Severe acute respiratory syndrome coronavirus 2 of the genus Betacoronavirus), is transmitted chiefly by contact with infectious material (such as respiratory droplets) or with objects or surfaces contaminated by the causative virus, and is characterized especially by fever, cough, and shortness of breath and may progress to pneumonia and respiratory failure —called also coronavirus, coronavirus disease, coronavirus disease 2019, CV-19, CV19",
+  "the coronavirus that causes COVID-19 : sars-cov-2"
+ ],
  "crest": [
   "a showy tuft or process on the head of an animal and especially a bird",
   "the plume or identifying emblem worn on a knight's helmet; also : the top of a helmet",
   "a heraldic representation of the crest"
+ ],
+ "customization": [
+  "to build, fit, or alter according to individual specifications"
+ ],
+ "customize": [
+  "to build, fit, or alter according to individual specifications"
+ ],
+ "declaration": [
+  "the act of declaring : announcement",
+  "the first pleading in a common-law action",
+  "a statement made by a party to a legal transaction usually not under oath"
+ ],
+ "declarative": [
+  "making a declaration : declaratory"
  ],
  "define": [
   "to determine or identify the essential qualities or meaning of",
@@ -64,6 +97,10 @@
   "one that serves as a pattern to be imitated or not to be imitated",
   "a punishment inflicted on someone as a warning to others; also : an individual so punished",
   "one that is representative of all of a group or type"
+ ],
+ "existent": [
+  "having being : existing",
+  "existing now : present"
  ],
  "folly": [
   "lack of good sense or normal prudence and foresight",
@@ -88,6 +125,25 @@
   "not to be avoided or evaded : necessary",
   "of, relating to, or constituting the grammatical mood that expresses the will to influence the behavior of another",
   "expressive of a command, entreaty, or exhortation"
+ ],
+ "integrate": [
+  "to form, coordinate, or blend into a functioning or unified whole : unite",
+  "to incorporate into a larger unit",
+  "to unite with something else"
+ ],
+ "integrated": [
+  "marked by the unified control of all aspects of production from raw materials through distribution of finished products",
+  "characterized by integration and especially racial integration"
+ ],
+ "invoke": [
+  "to petition for help or support",
+  "to appeal to or cite as authority",
+  "to call forth by incantation : conjure"
+ ],
+ "invoking": [
+  "to petition for help or support",
+  "to appeal to or cite as authority",
+  "to call forth by incantation : conjure"
  ],
  "jolly": [
   "full of high spirits : joyous",
@@ -141,6 +197,11 @@
   "to increase in number especially greatly or in multiples : augment",
   "to find the product of by multiplication",
   "to use as a multiplicand in multiplication with another number"
+ ],
+ "original": [
+  "of, relating to, or constituting an origin or beginning : initial",
+  "not secondary, derivative, or imitative",
+  "being the first instance or source from which a copy, reproduction, or translation is or can be made"
  ],
  "par": [
   "the established value of the monetary unit of one country expressed in terms of the monetary unit of another country using the same metal as the standard of value",

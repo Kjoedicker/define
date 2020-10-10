@@ -29,7 +29,6 @@ func procWord(word string, verbosity int) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
 	dictionary := getDict(dictFile)
 	definition, err := checkDict(word, dictionary)
 	if err == nil {
@@ -41,6 +40,7 @@ func procWord(word string, verbosity int) {
 	if err != nil {
 		log.Fatalln(err)
 	} else {
+
 		definition := get(requestLink)
 
 		err := updateDict(dictionary, word, definition[0].Shortdef)

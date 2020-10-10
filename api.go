@@ -67,10 +67,10 @@ func get(url string) definition {
 
 	//sponge
 	// fmt.Printf("referencing api..\n%v", url)
-
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatalln(err)
+		fmt.Printf("Failed to resolve GET")
+		log.Fatal(err)
 	}
 
 	defer resp.Body.Close()
