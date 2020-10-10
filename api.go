@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	"gopkg.in/yaml.v2"
 )
@@ -41,7 +42,12 @@ type config struct {
 //   look in different locations: XDG_BASE, $HOME/.config?
 func getConfig() (string, string, string, string, error) {
 
-	buf, err := ioutil.ReadFile("conf.yaml")
+	home, ok := os.LookupEnv("HOME")
+	if !ok {
+		return "", "", "", "", errors.New("$HOME - enviromental variable not set")
+	}
+
+	buf, err := ioutil.ReadFile(home + "/.config/define/conf.yaml")
 	if err != nil {
 		return "", "", "", "", errors.New("conf.yaml - not in path")
 	}
