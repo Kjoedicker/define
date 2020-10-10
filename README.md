@@ -1,4 +1,5 @@
 # define [![Build Status](https://travis-ci.com/Kjoedicker/define.svg?branch=master)](https://travis-ci.com/Kjoedicker/define) [![Go Report Card](https://goreportcard.com/badge/github.com/Kjoedicker/define)](https://goreportcard.com/report/github.com/Kjoedicker/define)
+
 A cli tool for defining words, and building a local dictionary.
 
 ## About
@@ -8,7 +9,13 @@ Allows you to define, store, and lookup previously defined words.
 
 ```console
 $ go get github.com/Kjoedicker/define
-$ go build main.go jsonhandler.go
+```
+or
+
+```console
+$ git clone https://github.com/Kjoedicker/define.git
+$ cd define 
+$ go build .
 ```
 
 You will need to create a developer account with [dictionary](https://dictionaryapi.com)
