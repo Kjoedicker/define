@@ -5,6 +5,7 @@ import (
 	// "fmt"
 )
 
+/// TODO(#19): handle dictionary.json that is not made yet
 func updateDict(dictionary map[string][]string, word string, definition []string) bool {
 	if definition != nil {
 		dictionary[word] = definition
