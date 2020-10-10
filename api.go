@@ -38,8 +38,6 @@ type config struct {
 	Dictionary string `yaml:"dictionary"`
 }
 
-// TODO(#21): set a more standardized path to look for conf.yaml files
-//   look in different locations: XDG_BASE, $HOME/.config?
 func getConfig() (string, string, string, string, string, error) {
 
 	defPath, ok := os.LookupEnv("DEFINE_PATH")
