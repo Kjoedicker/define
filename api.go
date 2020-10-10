@@ -40,24 +40,24 @@ type config struct {
 
 // TODO(#21): set a more standardized path to look for conf.yaml files
 //   look in different locations: XDG_BASE, $HOME/.config?
-func getConfig() (string, string, string, string, error) {
+func getConfig() (string, string, string, string, string, error) {
 
-	home, ok := os.LookupEnv("HOME")
+	defPath, ok := os.LookupEnv("DEFINE_PATH")
 	if !ok {
-		return "", "", "", "", errors.New("$HOME - enviromental variable not set")
+		return "", "", "", "", "", errors.New("$DEFINE_PATH - enviromental variable not set")
 	}
 
-	buf, err := ioutil.ReadFile(home + "/.config/define/conf.yaml")
+	buf, err := ioutil.ReadFile(defPath + "/conf.yaml")
 	if err != nil {
-		return "", "", "", "", errors.New("conf.yaml - not in path")
+		return "", "", "", "", "", errors.New("conf.yaml - not in path")
 	}
 
 	conf := &config{}
 	err = yaml.Unmarshal(buf, conf)
 	if err != nil {
-		return "", "", "", "", errors.New("conf.yaml - invalid configuration")
+		return "", "", "", "", "", errors.New("conf.yaml - invalid configuration")
 	}
-	return conf.Website, conf.Link, conf.APIKey, conf.Dictionary, nil
+	return conf.Website, conf.Link, conf.APIKey, conf.Dictionary, defPath, nil
 }
 
 func parseRequest(word string, website string, link string, apiKey string) (string, error) {

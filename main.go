@@ -25,11 +25,12 @@ func procWord(word string, verbosity int) {
 		fmt.Printf("\n%v:\n", word)
 	}
 
-	website, link, apiKey, dictFile, err := getConfig()
+	website, link, apiKey, dictFile, defPath, err := getConfig()
 	if err != nil {
 		log.Fatalln(err)
 	}
-	dictionary := getDict(dictFile)
+
+	dictionary := getDict(defPath + "/" + dictFile)
 	definition, err := checkDict(word, dictionary)
 	if err == nil {
 		displayDef(definition, 0)
@@ -47,7 +48,7 @@ func procWord(word string, verbosity int) {
 		if err != false {
 			fmt.Printf("%v - not in dictionary", word)
 		} else {
-			storeJSON(dictFile, dictionary)
+			storeJSON(defPath+"/"+dictFile, dictionary)
 			displayDef(definition[0].Shortdef, 0)
 		}
 	}
