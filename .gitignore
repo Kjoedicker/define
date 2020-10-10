@@ -1,7 +1,7 @@
 Makefile
 conf.yaml
 define
-dictionary.json
+# dictionary.json
 snitch
 golint
 define.sh
