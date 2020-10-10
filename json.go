@@ -28,7 +28,7 @@ func froJSON(unparsedJSON []byte) map[string][]string {
 func grabJSON(filename string) []byte {
 
 	JSONFile, err := os.Open(filename)
-	// TODO: add support for creating a dictionary file, if not provided already.
+	// TODO(#22): if missing, add support for creating a .json dictionary file.
 	if err != nil {
 		log.Fatalf("grabJSON() - error in provided filepath\n")
 	}
