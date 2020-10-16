@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"io/ioutil"
 	"os"
 
@@ -9,28 +8,38 @@ import (
 )
 
 type config struct {
-	Website    string `yaml:"website"`
-	Link       string `yaml:"link"`
-	APIKey     string `yaml:"apikey"`
+	Website []struct {
+		API struct {
+			Website string `yaml:"website"`
+			Link    string `yaml:"link"`
+			Apikey  string `yaml:"apikey"`
+		} `yaml:"api"`
+	} `yaml:"website"`
 	Dictionary string `yaml:"dictionary"`
 }
 
-func getConfig() (string, string, string, string, string, error) {
+func getConfig() (*config, string) {
 
 	defPath, ok := os.LookupEnv("DEFINE_PATH")
 	if !ok {
-		return "", "", "", "", "", errors.New("$DEFINE_PATH - enviromental variable not set")
+		panic("$DEFINE_PATH - enviromental variable not set")
 	}
 
 	buf, err := ioutil.ReadFile(defPath + "/conf.yaml")
 	if err != nil {
-		return "", "", "", "", "", errors.New("conf.yaml - not in path")
+		panic("conf.yaml - not in path")
 	}
 
 	conf := &config{}
 	err = yaml.Unmarshal(buf, conf)
 	if err != nil {
-		return "", "", "", "", "", errors.New("conf.yaml - invalid configuration")
+		panic("conf.yaml - invalid configuration")
 	}
-	return conf.Website, conf.Link, conf.APIKey, conf.Dictionary, defPath, nil
+
+	return conf, defPath
+}
+
+func parseConfig(conf *config, idx int) (string, string, string, string) {
+
+	return conf.Website[idx].API.Website, conf.Website[idx].API.Link, conf.Website[idx].API.Apikey, conf.Dictionary
 }
