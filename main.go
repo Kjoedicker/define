@@ -31,7 +31,7 @@ func procWord(word string, verbosity int) {
 
 		website, link, apiKey, dictFile := parseConfig(apiConf, idx)
 
-		// TODO: Should we update the dictionary to reflect definitions from multiple sources
+		// TODO(#23): Should we update the dictionary to reflect definitions from multiple sources
 		//  this may lead to over the top defintions, or repeats.
 		dictionary := getDict(defPath + "/" + dictFile)
 		definition, err := checkDict(word, dictionary)
