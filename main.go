@@ -28,7 +28,6 @@ func procWord(word string, verbosity int) {
 	apiConf, defPath := getConfig()
 
 	for idx := range apiConf.Website {
-
 		website, link, apiKey, dictFile := parseConfig(apiConf, idx)
 
 		// TODO(#23): Should we update the dictionary to reflect definitions from multiple sources
@@ -44,15 +43,15 @@ func procWord(word string, verbosity int) {
 		if err != nil {
 			log.Fatalln(err)
 		} else {
+			definition := callApi(website, requestLink)
 
-			definition := get(requestLink)
-
-			err := updateDict(dictionary, word, definition[0].Shortdef)
+			err := updateDict(dictionary, word, definition)
 			if err != false {
-				fmt.Printf("%v - not in dictionary", word)
+				fmt.Printf("%v - %v - not in dictionary\n", website, word)
 			} else {
 				storeJSON(defPath+"/"+dictFile, dictionary)
-				displayDef(definition[0].Shortdef, 0)
+				displayDef(definition, 0)
+				return
 			}
 		}
 	}

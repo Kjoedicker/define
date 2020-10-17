@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -23,17 +22,17 @@ func parseRequest(word string, website string, link string, apiKey string) (stri
 
 	// TODO(#6): add support for multiple dictionary apis
 	switch website {
-	case "dictionary.com":
+	case "dictionaryapi.com":
 		return fmt.Sprintf("%v%v%v", link, word, apiKey), nil
+	case "api.dictionaryapi.dev":
+		return fmt.Sprintf("%v%v", link, word), nil
 	}
 
 	return "", errors.New("conf.Website invalid config")
 }
 
-func get(url string) definition {
+func get(url string) []byte {
 
-	//sponge
-	// fmt.Printf("referencing api..\n%v", url)
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("Failed to resolve GET\n")
@@ -43,8 +42,5 @@ func get(url string) definition {
 	defer resp.Body.Close()
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 
-	parsedReq := definition{}
-	json.Unmarshal(bodyBytes, &parsedReq)
-
-	return parsedReq
+	return bodyBytes
 }
