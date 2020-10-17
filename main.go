@@ -25,31 +25,34 @@ func procWord(word string, verbosity int) {
 		fmt.Printf("\n%v:\n", word)
 	}
 
-	website, link, apiKey, dictFile, defPath, err := getConfig()
-	if err != nil {
-		log.Fatalln(err)
-	}
+	apiConf, defPath := getConfig()
 
-	dictionary := getDict(defPath + "/" + dictFile)
-	definition, err := checkDict(word, dictionary)
-	if err == nil {
-		displayDef(definition, 0)
-		return
-	}
+	for idx := range apiConf.Website {
+		website, link, apiKey, dictFile := parseConfig(apiConf, idx)
 
-	requestLink, err := parseRequest(word, website, link, apiKey)
-	if err != nil {
-		log.Fatalln(err)
-	} else {
+		// TODO(#23): Should we update the dictionary to reflect definitions from multiple sources
+		//  this may lead to over the top defintions, or repeats.
+		dictionary := getDict(defPath + "/" + dictFile)
+		definition, err := checkDict(word, dictionary)
+		if err == nil {
+			displayDef(definition, 0)
+			return
+		}
 
-		definition := get(requestLink)
-
-		err := updateDict(dictionary, word, definition[0].Shortdef)
-		if err != false {
-			fmt.Printf("%v - not in dictionary", word)
+		requestLink, err := parseRequest(word, website, link, apiKey)
+		if err != nil {
+			log.Fatalln(err)
 		} else {
-			storeJSON(defPath+"/"+dictFile, dictionary)
-			displayDef(definition[0].Shortdef, 0)
+			definition := callAPI(website, requestLink)
+
+			err := updateDict(dictionary, word, definition)
+			if err != false {
+				fmt.Printf("\"%v\" - not in dictionary - %v\n", word, website)
+			} else {
+				storeJSON(defPath+"/"+dictFile, dictionary)
+				displayDef(definition, 0)
+				return
+			}
 		}
 	}
 }

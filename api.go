@@ -2,18 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
-	"fmt"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"os"
-
-	"gopkg.in/yaml.v2"
 )
 
 // TODO(#7): structure for other APIs
-type definition []struct {
+type merriamAPI []struct {
 	Meta struct {
 		ID string `json:"id"`
 	} `json:"meta"`
@@ -21,69 +13,63 @@ type definition []struct {
 	Shortdef []string `json:"shortdef"`
 }
 
-// TODO(#15): find other panic mode errors and handle them here
-func recovery(errType string) {
-	if r := recover(); r != nil {
-		switch errType {
-		case "invalid":
-			fmt.Println("not in database")
-		}
-	}
+func (API merriamAPI) getDef() []string {
+	return API[0].Shortdef
 }
 
-type config struct {
-	Website    string `yaml:"website"`
-	Link       string `yaml:"link"`
-	APIKey     string `yaml:"apikey"`
-	Dictionary string `yaml:"dictionary"`
-}
-
-func getConfig() (string, string, string, string, string, error) {
-
-	defPath, ok := os.LookupEnv("DEFINE_PATH")
-	if !ok {
-		return "", "", "", "", "", errors.New("$DEFINE_PATH - enviromental variable not set")
-	}
-
-	buf, err := ioutil.ReadFile(defPath + "/conf.yaml")
-	if err != nil {
-		return "", "", "", "", "", errors.New("conf.yaml - not in path")
-	}
-
-	conf := &config{}
-	err = yaml.Unmarshal(buf, conf)
-	if err != nil {
-		return "", "", "", "", "", errors.New("conf.yaml - invalid configuration")
-	}
-	return conf.Website, conf.Link, conf.APIKey, conf.Dictionary, defPath, nil
-}
-
-func parseRequest(word string, website string, link string, apiKey string) (string, error) {
-
-	// TODO(#6): add support for multiple dictionary apis
-	switch website {
-	case "dictionary.com":
-		return fmt.Sprintf("%v%v%v", link, word, apiKey), nil
-	}
-
-	return "", errors.New("conf.Website invalid config")
-}
-
-func get(url string) definition {
-
-	//sponge
-	// fmt.Printf("referencing api..\n%v", url)
-	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Printf("Failed to resolve GET\n")
-		log.Fatal(err)
-	}
-
-	defer resp.Body.Close()
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
-
-	parsedReq := definition{}
+func (API merriamAPI) marshallAPI(APIType string, bodyBytes []byte) merriamAPI {
+	parsedReq := merriamAPI{}
 	json.Unmarshal(bodyBytes, &parsedReq)
-
 	return parsedReq
+}
+
+type googleAPI []struct {
+	Word      string `json:"word"`
+	Phonetics []struct {
+		Text  string `json:"text"`
+		Audio string `json:"audio"`
+	} `json:"phonetics"`
+	Meanings []struct {
+		PartOfSpeech string `json:"partOfSpeech"`
+		Definitions  []struct {
+			Definition string   `json:"definition"`
+			Example    string   `json:"example"`
+			Synonyms   []string `json:"synonyms"`
+		} `json:"definitions"`
+	} `json:"meanings"`
+}
+
+func (API googleAPI) getDef() []string {
+
+	if len(API) > 0 {
+		definitions := make([]string, len(API[0].Meanings))
+		for idx := range API[0].Meanings {
+			definitions[idx] = API[0].Meanings[idx].Definitions[0].Definition
+		}
+		return definitions
+	}
+	return []string(nil)
+}
+
+func (API googleAPI) marshallAPI(APIType string, bodyBytes []byte) googleAPI {
+	parsedReq := googleAPI{}
+	json.Unmarshal(bodyBytes, &parsedReq)
+	return parsedReq
+}
+
+func callAPI(website string, requestLink string) []string {
+
+	switch website {
+	case "dictionaryAPI.com":
+		parsedReq := merriamAPI{}
+		got := parsedReq.marshallAPI(website, get(requestLink))
+		return got.getDef()
+
+	case "API.dictionaryAPI.dev":
+		parsedReq := googleAPI{}
+		got := parsedReq.marshallAPI(website, get(requestLink))
+		return got.getDef()
+	}
+
+	return []string(nil)
 }
