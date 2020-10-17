@@ -14,6 +14,7 @@ type merriamAPI []struct {
 }
 
 func (API merriamAPI) getDef() []string {
+	defer recovery("invalid")
 	return API[0].Shortdef
 }
 
