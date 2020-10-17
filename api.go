@@ -17,8 +17,8 @@ func (API merriamAPI) getDef() []string {
 	return API[0].Shortdef
 }
 
-func (API merriamAPI) marshallAPI(APIType string, bodyBytes []byte) definition {
-	parsedReq := definition{}
+func (API merriamAPI) marshallAPI(APIType string, bodyBytes []byte) merriamAPI {
+	parsedReq := merriamAPI{}
 	json.Unmarshal(bodyBytes, &parsedReq)
 	return parsedReq
 }

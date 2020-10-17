@@ -43,11 +43,11 @@ func procWord(word string, verbosity int) {
 		if err != nil {
 			log.Fatalln(err)
 		} else {
-			definition := callApi(website, requestLink)
+			definition := callAPI(website, requestLink)
 
 			err := updateDict(dictionary, word, definition)
 			if err != false {
-				fmt.Printf("%v - %v - not in dictionary\n", website, word)
+				fmt.Printf("\"%v\" - not in dictionary - %v\n", word, website)
 			} else {
 				storeJSON(defPath+"/"+dictFile, dictionary)
 				displayDef(definition, 0)
