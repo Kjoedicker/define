@@ -15,6 +15,7 @@ func updateDict(dictionary map[string][]string, word string, definition []string
 }
 
 func getDict(dictionary string) map[string][]string {
+
 	tmpDict := froJSON(grabJSON(dictionary))
 	if tmpDict != nil {
 		return tmpDict

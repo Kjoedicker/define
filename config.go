@@ -39,7 +39,11 @@ func getConfig() (*config, string) {
 	return conf, defPath
 }
 
-func parseConfig(conf *config, idx int) (string, string, string, string) {
+func getDictConf(conf *config) string {
+	return conf.Dictionary
+}
 
-	return conf.Website[idx].API.Website, conf.Website[idx].API.Link, conf.Website[idx].API.Apikey, conf.Dictionary
+func parseConfig(conf *config, idx int) (string, string, string) {
+
+	return conf.Website[idx].API.Website, conf.Website[idx].API.Link, conf.Website[idx].API.Apikey
 }

@@ -60,12 +60,12 @@ func (API googleAPI) marshallAPI(APIType string, bodyBytes []byte) googleAPI {
 func callAPI(website string, requestLink string) []string {
 
 	switch website {
-	case "dictionaryAPI.com":
+	case "dictionaryapi.com":
 		parsedReq := merriamAPI{}
 		got := parsedReq.marshallAPI(website, get(requestLink))
 		return got.getDef()
 
-	case "API.dictionaryAPI.dev":
+	case "api.dictionaryapi.dev":
 		parsedReq := googleAPI{}
 		got := parsedReq.marshallAPI(website, get(requestLink))
 		return got.getDef()
