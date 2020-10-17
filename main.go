@@ -66,7 +66,7 @@ func procWord(word string, verbosity int) {
 		definition := parseDef(tmpDef, len(apiConf.Website))
 
 		err := updateDict(dictionary, word, definition)
-		// TODO: This might be redudant, double check isntances where this occurs over 'defer recovery'
+		// TODO(#26): This might be redudant, double check isntances where this occurs over 'defer recovery'
 		if err != false {
 			fmt.Printf("\"%v\" - not in dictionary - %v\n", word, dictionary)
 		} else {
