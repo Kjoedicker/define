@@ -20,7 +20,6 @@ func recovery(errType string) {
 
 func parseRequest(word string, website string, link string, apiKey string) (string, error) {
 
-	// TODO(#6): add support for multiple dictionary apis
 	switch website {
 	case "dictionaryapi.com":
 		return fmt.Sprintf("%v%v%v", link, word, apiKey), nil
