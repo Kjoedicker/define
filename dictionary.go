@@ -6,7 +6,7 @@ import (
 )
 
 func updateDict(dictionary map[string][]string, word string, definition []string) bool {
-	// TODO: not working for all instances of nil definitions
+	// TODO(#25): not working for all instances of nil definitions
 	if definition != nil {
 		dictionary[word] = definition
 		return false
