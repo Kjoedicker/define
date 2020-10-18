@@ -40,6 +40,7 @@ type googleAPI []struct {
 	} `json:"meanings"`
 }
 
+// TODO(#27): does not properly handle nested definitions for unGoogleAPI
 func (API googleAPI) getDef() []string {
 
 	if len(API) > 0 {
