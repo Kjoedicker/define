@@ -68,7 +68,7 @@ func procWord(word string, verbosity int) {
 		err := updateDict(dictionary, word, definition)
 		// TODO(#26): This might be redudant, double check isntances where this occurs over 'defer recovery'
 		if err != false {
-			fmt.Printf("\"%v\" - not in dictionary - %v\n", word, dictionary)
+			fmt.Printf("\"%v\" - Not found \n", word)
 		} else {
 			storeJSON(defPath+"/"+dictFile, dictionary)
 			displayDef(definition, 0)
