@@ -14,8 +14,13 @@ type merriamAPI []struct {
 }
 
 func (API merriamAPI) getDef() []string {
-	defer recovery("invalid")
-	return API[0].Shortdef
+	defer recovery("empty")
+
+	if len(API) > 0 {
+		return API[0].Shortdef
+	}
+
+	return []string(nil)
 }
 
 func (API merriamAPI) marshallAPI(APIType string, bodyBytes []byte) merriamAPI {
@@ -42,6 +47,7 @@ type googleAPI []struct {
 
 // TODO(#27): does not properly handle nested definitions for unGoogleAPI
 func (API googleAPI) getDef() []string {
+	defer recovery("empty")
 
 	if len(API) > 0 {
 		definitions := make([]string, len(API[0].Meanings))
@@ -50,6 +56,7 @@ func (API googleAPI) getDef() []string {
 		}
 		return definitions
 	}
+
 	return []string(nil)
 }
 

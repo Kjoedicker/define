@@ -13,7 +13,7 @@ func recovery(errType string) {
 	if r := recover(); r != nil {
 		switch errType {
 		case "invalid":
-			fmt.Println("not in database")
+			return
 		}
 	}
 }
