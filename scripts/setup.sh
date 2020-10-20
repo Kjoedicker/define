@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO(#30): Rewrite this in GO for purity
+
 #create the dictionary file
 touch scripts/dictionary.json
 
