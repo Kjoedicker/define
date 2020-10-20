@@ -13,7 +13,7 @@ type merriamAPI []struct {
 	Shortdef []string `json:"shortdef"`
 }
 
-func (API merriamAPI) getDef() []string {
+func (API merriamAPI) parseDef() []string {
 	defer recovery("empty")
 
 	if len(API) > 0 {
@@ -46,7 +46,7 @@ type googleAPI []struct {
 }
 
 // TODO(#27): does not properly handle nested definitions for unGoogleAPI
-func (API googleAPI) getDef() []string {
+func (API googleAPI) parseDef() []string {
 	defer recovery("empty")
 
 	if len(API) > 0 {
@@ -72,12 +72,12 @@ func callAPI(website string, requestLink string) []string {
 	case "dictionaryapi.com":
 		parsedReq := merriamAPI{}
 		got := parsedReq.marshallAPI(website, get(requestLink))
-		return got.getDef()
+		return got.parseDef()
 
 	case "api.dictionaryapi.dev":
 		parsedReq := googleAPI{}
 		got := parsedReq.marshallAPI(website, get(requestLink))
-		return got.getDef()
+		return got.parseDef()
 	}
 
 	return []string(nil)

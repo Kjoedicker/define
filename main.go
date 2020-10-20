@@ -21,7 +21,7 @@ func displayDef(definition []string, traverses int) {
 	displayDef(definition, traverses+1)
 }
 
-func parseDef(tmpDef chan []string, size int) []string {
+func parseChan(tmpDef chan []string, size int) []string {
 	tmpDict := make([]string, 0)
 
 	for i := 0; i < size; i++ {
@@ -55,32 +55,19 @@ func checkWeb(word string, apiConf *config, tmpDef chan<- []string) {
 	wg.Wait()
 }
 
-func procWord(word string, verbosity int) ([]string, int) {
-
-	if verbosity == 1 {
-		fmt.Printf("\n%v:\n", word)
-	}
-
-	apiConf, defPath := getConfig()
-	dictFile := getDictConf(apiConf)
-
-	// TODO(#23): Should we update the dictionary to reflect definitions from multiple sources
-	//  this may lead to over the top defintions, or repeats.
-	dictionary := getDict(defPath + "/" + dictFile)
+func locateDef(word string, apiConf *config, defPath string, dictFile string, dictionary map[string][]string) ([]string, int) {
 
 	definition, found := checkDict(word, dictionary)
 	if !found {
 		tmpDef := make(chan []string, len(apiConf.Website))
 		checkWeb(word, apiConf, tmpDef)
 
-		definition = parseDef(tmpDef, len(apiConf.Website))
+		definition = parseChan(tmpDef, len(apiConf.Website))
 
 		err := updateDict(dictionary, word, definition)
 		if err != false {
 			return []string(nil), 0
 		}
-
-		storeJSON(defPath+"/"+dictFile, dictionary)
 	}
 
 	return definition, 1
@@ -91,6 +78,7 @@ func checkFlag(flag string) int {
 	if flag == "-v" {
 		return 1
 	}
+
 	return 0
 }
 
@@ -102,14 +90,28 @@ func main() {
 		return
 	}
 
+	apiConf, defPath := getConfig()
+	dictFile := getDictConf(apiConf)
+
+	// TODO(#23): Should we update the dictionary to reflect definitions from multiple sources
+	//  this may lead to over the top defintions, or repeats.
+	dictionary := getDict(defPath + "/" + dictFile)
+
 	verbosity := checkFlag(os.Args[1])
 	for index := verbosity + 1; index < len(os.Args); index++ {
 		word := os.Args[index]
-		definition, ok := procWord(os.Args[index], verbosity)
+		definition, ok := locateDef(os.Args[index], apiConf, defPath, dictFile, dictionary)
+
 		if ok != 1 {
 			fmt.Printf("\"%v\" - Not found \n", word)
+			continue
 		}
 
+		if verbosity == 1 {
+			fmt.Printf("\n%v:\n", word)
+		}
+
+		storeJSON(defPath+"/"+dictFile, dictionary)
 		displayDef(definition, 0)
 	}
 }
