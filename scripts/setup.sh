@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #create the dictionary file
-touch dictionary.json
+touch scripts/dictionary.json
 
 
 #create the conf.yaml file
@@ -17,4 +17,4 @@ website:
       link: "https://api.dictionaryapi.dev/api/v2/entries/en/"
       apikey: NULL
 dictionary: "dictionary.json"
-' >> conf.yaml
+' >> scripts/conf.yaml

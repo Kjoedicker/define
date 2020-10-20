@@ -12,6 +12,6 @@ script:
   - go vet -x ./...
   - golint -set_exit_status ./...
   - go build -v .
-  - chmod +x setup.sh 
-  - /scripts/setup.sh
+  - chmod +x scripts/setup.sh 
+  - scripts/setup.sh
   - go test -v .
