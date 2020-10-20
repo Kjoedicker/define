@@ -1,6 +1,8 @@
 language: go
 go:
   - 1.9.x
+env:
+  DEFINE_PATH="scripts"
 install:
   - go get github.com/kjoedicker/define
   - go get -v .
@@ -10,3 +12,6 @@ script:
   - go vet -x ./...
   - golint -set_exit_status ./...
   - go build -v .
+  - chmod +x setup.sh 
+  - /scripts/setup.sh
+  - go test -v .
