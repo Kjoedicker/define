@@ -1,9 +1,6 @@
 package main
 
-import (
-	"errors"
-	// "fmt"
-)
+// "fmt"
 
 func updateDict(dictionary map[string][]string, word string, definition []string) bool {
 	if len(definition) > 0 {
@@ -24,11 +21,11 @@ func getDict(dictionary string) map[string][]string {
 	return make(map[string][]string)
 }
 
-func checkDict(word string, dictionary map[string][]string) ([]string, error) {
+func checkDict(word string, dictionary map[string][]string) ([]string, bool) {
 
 	if word, ok := dictionary[word]; ok {
-		return word, nil
+		return word, true
 	}
 
-	return []string(nil), errors.New("checkDict() - undefined")
+	return []string(nil), false
 }

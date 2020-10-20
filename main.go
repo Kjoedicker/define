@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 	// "time"
 )
 
@@ -33,7 +34,28 @@ func parseDef(tmpDef chan []string, size int) []string {
 	return tmpDict
 }
 
-func procWord(word string, verbosity int) {
+func checkWeb(word string, apiConf *config, tmpDef chan<- []string) {
+	var wg sync.WaitGroup
+	for idx := range apiConf.Website {
+		wg.Add(1)
+
+		website, link, apiKey := parseConfig(apiConf, idx)
+
+		requestLink, err := parseRequest(word, website, link, apiKey)
+		if err != nil {
+			log.Fatalln(err)
+		} else {
+			go func() {
+				tmpDef <- callAPI(website, requestLink)
+				wg.Done()
+			}()
+		}
+	}
+
+	wg.Wait()
+}
+
+func procWord(word string, verbosity int) ([]string, int) {
 
 	if verbosity == 1 {
 		fmt.Printf("\n%v:\n", word)
@@ -45,38 +67,23 @@ func procWord(word string, verbosity int) {
 	// TODO(#23): Should we update the dictionary to reflect definitions from multiple sources
 	//  this may lead to over the top defintions, or repeats.
 	dictionary := getDict(defPath + "/" + dictFile)
-	dictDefinition, err := checkDict(word, dictionary)
-	if err != nil {
+
+	definition, found := checkDict(word, dictionary)
+	if !found {
 		tmpDef := make(chan []string, len(apiConf.Website))
+		checkWeb(word, apiConf, tmpDef)
 
-		for idx := range apiConf.Website {
-
-			website, link, apiKey := parseConfig(apiConf, idx)
-
-			requestLink, err := parseRequest(word, website, link, apiKey)
-			if err != nil {
-				log.Fatalln(err)
-			} else {
-				go func() {
-					tmpDef <- callAPI(website, requestLink)
-				}()
-			}
-		}
-
-		definition := parseDef(tmpDef, len(apiConf.Website))
+		definition = parseDef(tmpDef, len(apiConf.Website))
 
 		err := updateDict(dictionary, word, definition)
 		if err != false {
-			fmt.Printf("\"%v\" - Not found \n", word)
-		} else {
-			storeJSON(defPath+"/"+dictFile, dictionary)
-			displayDef(definition, 0)
-			return
+			return []string(nil), 0
 		}
+
+		storeJSON(defPath+"/"+dictFile, dictionary)
 	}
 
-	displayDef(dictDefinition, 0)
-	return
+	return definition, 1
 }
 
 func checkFlag(flag string) int {
@@ -97,6 +104,12 @@ func main() {
 
 	verbosity := checkFlag(os.Args[1])
 	for index := verbosity + 1; index < len(os.Args); index++ {
-		procWord(os.Args[index], verbosity)
+		word := os.Args[index]
+		definition, ok := procWord(os.Args[index], verbosity)
+		if ok != 1 {
+			fmt.Printf("\"%v\" - Not found \n", word)
+		}
+
+		displayDef(definition, 0)
 	}
 }
