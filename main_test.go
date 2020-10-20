@@ -45,7 +45,7 @@ func TestCallAPI(t *testing.T) {
 	}{
 		{0, "undefinableword", 0, 0},
 		{0, "definable", 1, 10},
-		{1, "undefinableword", 0, 0},
+		{1, "undefinableword", 1, 0},
 		{1, "definable", 1, 10},
 	}
 
