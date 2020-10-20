@@ -1,6 +1,8 @@
 language: go
 go:
   - 1.9.x
+env:
+  DEFINE_PATH="."
 install:
   - go get github.com/kjoedicker/define
   - go get -v .
@@ -10,4 +12,7 @@ script:
   - go vet -x ./...
   - golint -set_exit_status ./...
   - go build -v .
+  - chmod +x main_test.sh
+  - touch dictionary.json
+  - ./main_test.sh
   - go test -v .
