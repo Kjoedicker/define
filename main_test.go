@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -8,20 +9,25 @@ import (
 )
 
 func initConf() {
-	tmpBody := `
-	---
-	website:
-	- api:
-		website: "dictionaryapi.com"
-		link: "https://www.dictionaryapi.com/api/v3/references/collegiate/json/"
-		apikey: '$API1'
-	- api:
-		website: "api.dictionaryapi.dev"
-		link: "https://api.dictionaryapi.dev/api/v2/entries/en/"
-		apikey: NULL
-	dictionary: "dictionary.json"
-	`
 
+	API1, ok := os.LookupEnv("API1")
+	if !ok {
+		panic("$API1 - enviromental variable not set")
+	}
+	tmpBody := `
+---
+website:
+ - api:
+      website: "dictionaryapi.com"
+      link: "https://www.dictionaryapi.com/api/v3/references/collegiate/json/"
+      apikey: "` + API1 + `"
+ - api:
+      website: "api.dictionaryapi.dev"
+      link: "https://api.dictionaryapi.dev/api/v2/entries/en/"
+      apikey: NULL
+dictionary: "dictionary.json"
+`
+	fmt.Println(tmpBody)
 	err := ioutil.WriteFile("./conf.yaml", []byte(tmpBody), 0644)
 	if err != nil {
 		log.Fatal(err)
@@ -29,7 +35,7 @@ func initConf() {
 }
 
 func getLogistics() (*config, string, map[string][]string) {
-	go initConf()
+	initConf()
 	apiConf, defPath := getConfig()
 	dictFile := getDictConf(apiConf)
 	dictionary := getDict(defPath + "/" + dictFile)
@@ -39,7 +45,6 @@ func getLogistics() (*config, string, map[string][]string) {
 
 func TestLocateDef(t *testing.T) {
 	apiConf, dictFile, dictionary := getLogistics()
-	os.Remove("conf.yaml")
 
 	var tests = []struct {
 		a  string
@@ -58,11 +63,11 @@ func TestLocateDef(t *testing.T) {
 			}
 		})
 	}
+	os.Remove("conf.yaml")
 }
 
 func TestCallAPI(t *testing.T) {
 	apiConf, _, _ := getLogistics()
-	os.Remove("conf.yaml")
 
 	var tests = []struct {
 		idx  int
@@ -94,4 +99,5 @@ func TestCallAPI(t *testing.T) {
 			}
 		})
 	}
+	os.Remove("conf.yaml")
 }
