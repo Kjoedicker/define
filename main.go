@@ -55,7 +55,7 @@ func checkWeb(word string, apiConf *config, tmpDef chan<- []string) {
 	wg.Wait()
 }
 
-func locateDef(word string, apiConf *config, defPath string, dictFile string, dictionary map[string][]string) ([]string, int) {
+func locateDef(word string, apiConf *config, dictFile string, dictionary map[string][]string) ([]string, int) {
 
 	definition, found := checkDict(word, dictionary)
 	if !found {
@@ -100,7 +100,7 @@ func main() {
 	verbosity := checkFlag(os.Args[1])
 	for index := verbosity + 1; index < len(os.Args); index++ {
 		word := os.Args[index]
-		definition, ok := locateDef(os.Args[index], apiConf, defPath, dictFile, dictionary)
+		definition, ok := locateDef(os.Args[index], apiConf, dictFile, dictionary)
 
 		if ok != 1 {
 			fmt.Printf("\"%v\" - Not found \n", word)

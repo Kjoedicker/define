@@ -1,19 +1,45 @@
 package main
 
 import (
+	"io/ioutil"
+	"log"
+	"os"
 	"testing"
 )
 
-func getLogistics() (*config, string, string, map[string][]string) {
+func initConf() {
+	tmpBody := `
+	---
+	website:
+	- api:
+		website: "dictionaryapi.com"
+		link: "https://www.dictionaryapi.com/api/v3/references/collegiate/json/"
+		apikey: '$API1'
+	- api:
+		website: "api.dictionaryapi.dev"
+		link: "https://api.dictionaryapi.dev/api/v2/entries/en/"
+		apikey: NULL
+	dictionary: "dictionary.json"
+	`
+
+	err := ioutil.WriteFile("./conf.yaml", []byte(tmpBody), 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func getLogistics() (*config, string, map[string][]string) {
+	go initConf()
 	apiConf, defPath := getConfig()
 	dictFile := getDictConf(apiConf)
 	dictionary := getDict(defPath + "/" + dictFile)
 
-	return apiConf, defPath, dictFile, dictionary
+	return apiConf, dictFile, dictionary
 }
 
 func TestLocateDef(t *testing.T) {
-	apiConf, defPath, dictFile, dictionary := getLogistics()
+	apiConf, dictFile, dictionary := getLogistics()
+	os.Remove("conf.yaml")
 
 	var tests = []struct {
 		a  string
@@ -26,7 +52,7 @@ func TestLocateDef(t *testing.T) {
 	for _, tv := range tests {
 
 		t.Run(tv.a, func(t *testing.T) {
-			_, ok := locateDef(tv.a, apiConf, defPath, dictFile, dictionary)
+			_, ok := locateDef(tv.a, apiConf, dictFile, dictionary)
 			if ok == tv.o1 {
 				t.Errorf("got %d - want %d", ok, tv.o1)
 			}
@@ -35,7 +61,8 @@ func TestLocateDef(t *testing.T) {
 }
 
 func TestCallAPI(t *testing.T) {
-	apiConf, _, _, _ := getLogistics()
+	apiConf, _, _ := getLogistics()
+	os.Remove("conf.yaml")
 
 	var tests = []struct {
 		idx  int
