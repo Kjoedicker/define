@@ -22,20 +22,25 @@ func displayDef(definition []string, traverses int) {
 }
 
 func parseChan(tmpDef chan []string, size int) []string {
-	tmpDict := make([]string, 0)
 
-	for i := 0; i < size; i++ {
-		tmp := <-tmpDef
-		for j := 0; j < len(tmp); j++ {
-			tmpDict = append(tmpDict, tmp[j])
+	if len(tmpDef) > 0 {
+		tmpDict := make([]string, 0)
+
+		for i := 0; i < size; i++ {
+			tmp := <-tmpDef
+			for j := 0; j < len(tmp); j++ {
+				tmpDict = append(tmpDict, tmp[j])
+			}
 		}
+		return tmpDict
 	}
 
-	return tmpDict
+	return []string(nil)
 }
 
 func checkWeb(word string, apiConf *config, tmpDef chan<- []string) {
 	var wg sync.WaitGroup
+
 	for idx := range apiConf.Website {
 		wg.Add(1)
 
@@ -55,7 +60,7 @@ func checkWeb(word string, apiConf *config, tmpDef chan<- []string) {
 	wg.Wait()
 }
 
-func locateDef(word string, apiConf *config, dictFile string, dictionary map[string][]string) ([]string, int) {
+func locateDef(word string, apiConf *config, dictFile string, dictionary map[string][]string) []string {
 
 	definition, found := checkDict(word, dictionary)
 	if !found {
@@ -64,13 +69,10 @@ func locateDef(word string, apiConf *config, dictFile string, dictionary map[str
 
 		definition = parseChan(tmpDef, len(apiConf.Website))
 
-		err := updateDict(dictionary, word, definition)
-		if err != false {
-			return []string(nil), 0
-		}
+		return definition
 	}
 
-	return definition, 1
+	return definition
 }
 
 func checkFlag(flag string) int {
@@ -100,18 +102,21 @@ func main() {
 	verbosity := checkFlag(os.Args[1])
 	for index := verbosity + 1; index < len(os.Args); index++ {
 		word := os.Args[index]
-		definition, ok := locateDef(os.Args[index], apiConf, dictFile, dictionary)
+		definition := locateDef(os.Args[index], apiConf, dictFile, dictionary)
 
-		if ok != 1 {
+		failed := verifyDef(definition)
+		if failed {
 			fmt.Printf("\"%v\" - Not found \n", word)
 			continue
 		}
+
+		updateDict(dictionary, word, definition)
+		storeJSON(defPath+"/"+dictFile, dictionary)
 
 		if verbosity == 1 {
 			fmt.Printf("\n%v:\n", word)
 		}
 
-		storeJSON(defPath+"/"+dictFile, dictionary)
 		displayDef(definition, 0)
 	}
 }

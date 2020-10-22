@@ -57,9 +57,10 @@ func TestLocateDef(t *testing.T) {
 	for _, tv := range tests {
 
 		t.Run(tv.a, func(t *testing.T) {
-			_, ok := locateDef(tv.a, apiConf, dictFile, dictionary)
-			if ok == tv.o1 {
-				t.Errorf("got %d - want %d", ok, tv.o1)
+			definition := locateDef(tv.a, apiConf, dictFile, dictionary)
+			ok := verifyDef(definition)
+			if !ok {
+				t.Errorf("got %v - want %d", ok, tv.o1)
 			}
 		})
 	}

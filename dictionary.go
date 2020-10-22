@@ -1,14 +1,16 @@
 package main
 
-// "fmt"
+func verifyDef(definition []string) bool {
 
-func updateDict(dictionary map[string][]string, word string, definition []string) bool {
 	if len(definition) > 0 {
-		dictionary[word] = definition
 		return false
 	}
 
 	return true
+}
+
+func updateDict(dictionary map[string][]string, word string, definition []string) {
+	dictionary[word] = definition
 }
 
 func getDict(dictionary string) map[string][]string {
