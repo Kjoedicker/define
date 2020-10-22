@@ -48,10 +48,10 @@ func TestLocateDef(t *testing.T) {
 
 	var tests = []struct {
 		a  string
-		o1 int
+		o1 bool
 	}{
-		{"undefinablestring", 1},
-		{"definable", 0},
+		{"undefinablestring", true},
+		{"definable", false},
 	}
 
 	for _, tv := range tests {
@@ -59,8 +59,8 @@ func TestLocateDef(t *testing.T) {
 		t.Run(tv.a, func(t *testing.T) {
 			definition := locateDef(tv.a, apiConf, dictFile, dictionary)
 			ok := verifyDef(definition)
-			if !ok {
-				t.Errorf("got %v - want %d", ok, tv.o1)
+			if ok != tv.o1 {
+				t.Errorf("got: %s is a (%v) def - want (%v)", tv.a, ok, tv.o1)
 			}
 		})
 	}
