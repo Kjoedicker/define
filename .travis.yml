@@ -7,7 +7,6 @@ install:
   - go get github.com/kjoedicker/define
   - go get -v .
   - go get -u golang.org/x/lint/golint
-
 script:
   - diff <(gofmt -d .) <(echo -n)
   - go vet -x ./...
