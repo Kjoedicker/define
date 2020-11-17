@@ -21,6 +21,7 @@ func displayDef(definition []string, traverses int) {
 	displayDef(definition, traverses+1)
 }
 
+// TODO(#31): test
 func parseChan(tmpDef chan []string, size int) []string {
 
 	if len(tmpDef) > 0 {
