@@ -119,7 +119,6 @@ func main() {
 			fmt.Printf("\n%v:\n", word)
 		}
 
-		// TODO(#32): add flag to specify the number of definitions returned
 		displayDef(definition, 0, depth)
 	}
 }
