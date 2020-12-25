@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -9,16 +10,16 @@ import (
 )
 
 // TODO(#11): flags to specify display type. json, text,?
-func displayDef(definition []string, traverses int) {
+func displayDef(definition []string, traverses int, depth int) {
 	defer recovery("invalid")
 
-	if traverses == (len(definition) - 1) {
+	if traverses == (len(definition)-1) || traverses == (depth-1) {
 		fmt.Printf("%d - %v\n", (traverses + 1), definition[traverses])
 		return
 	}
 
 	fmt.Printf("%d - %v\n", (traverses + 1), definition[traverses])
-	displayDef(definition, traverses+1)
+	displayDef(definition, traverses+1, depth)
 }
 
 // TODO(#31): test
@@ -76,13 +77,13 @@ func locateDef(word string, apiConf *config, dictFile string, dictionary map[str
 	return definition
 }
 
-func checkFlag(flag string) int {
+func parseFlags() (bool, int, []string) {
+	verbose := flag.Bool("verbose", false, "Display word with definitions")
+	depth := flag.Int("depth", 0, "Amount of definitions displayed")
 
-	if flag == "-v" {
-		return 1
-	}
+	flag.Parse()
 
-	return 0
+	return *verbose, *depth, flag.Args()
 }
 
 // TODO(#2): Implement more flags, is there a better way to parse flags?
@@ -100,10 +101,10 @@ func main() {
 	//  this may lead to over the top defintions, or repeats.
 	dictionary := getDict(defPath + "/" + dictFile)
 
-	verbosity := checkFlag(os.Args[1])
-	for index := verbosity + 1; index < len(os.Args); index++ {
-		word := os.Args[index]
-		definition := locateDef(os.Args[index], apiConf, dictFile, dictionary)
+	verbose, depth, words := parseFlags()
+	for index := 0; index < len(words); index++ {
+		word := words[index]
+		definition := locateDef(words[index], apiConf, dictFile, dictionary)
 
 		failed := verifyDef(definition)
 		if failed {
@@ -114,11 +115,11 @@ func main() {
 		updateDict(dictionary, word, definition)
 		storeJSON(defPath+"/"+dictFile, dictionary)
 
-		if verbosity == 1 {
+		if verbose {
 			fmt.Printf("\n%v:\n", word)
 		}
 
 		// TODO(#32): add flag to specify the number of definitions returned
-		displayDef(definition, 0)
+		displayDef(definition, 0, depth)
 	}
 }
