@@ -86,7 +86,6 @@ func parseFlags() (bool, int, []string) {
 	return *verbose, *depth, flag.Args()
 }
 
-// TODO(#2): Implement more flags, is there a better way to parse flags?
 func main() {
 
 	if len(os.Args) < 2 {
